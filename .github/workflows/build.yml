@@ -21,6 +21,22 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      # CREATE DEBUG KEYSTORE (IMPORTANT FIX)
+      - name: Create debug keystore
+        run: |
+          mkdir -p ~/.android
+          keytool -genkeypair \
+            -v \
+            -storetype PKCS12 \
+            -keystore ~/.android/debug.keystore \
+            -storepass android \
+            -alias androiddebugkey \
+            -keypass android \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=Android Debug,O=Android,C=US"
+
       - name: Generate Gradle Wrapper
         run: |
           gradle wrapper --gradle-version 8.4
